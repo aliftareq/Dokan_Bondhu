@@ -10,7 +10,7 @@ interface DashboardProps {
 }
 
 export function Dashboard({ products, customers, transactions }: DashboardProps) {
-  const totalInventoryValue = products.reduce((sum, p) => sum + (p.quantity * p.price), 0);
+  const totalInventoryValue = products.reduce((sum, p) => sum + (p.quantity * 1), 0);
   const totalBaki = customers.reduce((sum, c) => sum + c.totalBaki, 0);
   const lowStockProducts = products.filter(p => p.quantity < 10 && p.quantity > 0);
   const outOfStockProducts = products.filter(p => p.quantity === 0);
@@ -39,9 +39,9 @@ export function Dashboard({ products, customers, transactions }: DashboardProps)
             <Package className="w-3.5 h-3.5 text-blue-600" />
           </CardHeader>
           <CardContent className="pt-1">
-            <div className="text-blue-900">৳{totalInventoryValue.toLocaleString()}</div>
+            <div className="text-blue-900">{totalInventoryValue.toLocaleString()} items</div>
             <p className="text-xs text-blue-700 mt-0.5">
-              {products.length} items
+              {products.length} types
             </p>
           </CardContent>
         </Card>
@@ -142,6 +142,7 @@ export function Dashboard({ products, customers, transactions }: DashboardProps)
               <p className="text-slate-500 text-center py-6 text-sm">All products are well stocked!</p>
             )}
           </CardContent>
+          <button className="btn bg-red w-1/3 mx-auto mb-4 text-white">See All</button>
         </Card>
 
         <Card className="shadow-sm hover:shadow-md transition-shadow">
@@ -181,6 +182,7 @@ export function Dashboard({ products, customers, transactions }: DashboardProps)
               <p className="text-slate-500 text-center py-6 text-sm">No outstanding credit</p>
             )}
           </CardContent>
+          <button className="btn bg-red w-1/3 mx-auto mb-4 text-white">See All</button>
         </Card>
 
         <Card className="shadow-sm hover:shadow-md transition-shadow">
@@ -227,6 +229,7 @@ export function Dashboard({ products, customers, transactions }: DashboardProps)
               ))}
             </div>
           </CardContent>
+          <button className="btn bg-red w-1/3 mx-auto mb-4 text-white">See All</button>
         </Card>
       </div>
     </div>

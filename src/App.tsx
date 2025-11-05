@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { Toaster } from "./components/ui/sonner";
 import { Dashboard } from "./components/Dashboard";
 import { InventoryView } from "./components/InventoryView";
 import { CustomerLedger } from "./components/CustomerLedger";
 import { TransactionsView } from "./components/TransactionsView";
-import { LayoutDashboard, Package, Users, Receipt } from 'lucide-react';
+import { LayoutDashboard, Package, Users, Receipt } from "lucide-react";
 
 export interface Product {
   id: string;
@@ -29,14 +29,14 @@ export interface BakiTransaction {
   id: string;
   date: Date;
   amount: number;
-  type: 'credit' | 'payment';
+  type: "credit" | "payment";
   description: string;
 }
 
 export interface Transaction {
   id: string;
   date: Date;
-  type: 'sale' | 'stock-in' | 'baki-sale' | 'baki-payment';
+  type: "sale" | "stock-in" | "baki-sale" | "baki-payment";
   productName?: string;
   quantity?: number;
   amount: number;
@@ -46,54 +46,165 @@ export interface Transaction {
 
 // Helper function to convert numbers to Bengali
 const englishToBengaliNumber = (num: number): string => {
-  const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-  return num.toString().split('').map(digit => bengaliDigits[parseInt(digit)] || digit).join('');
+  const bengaliDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+  return num
+    .toString()
+    .split("")
+    .map((digit) => bengaliDigits[parseInt(digit)] || digit)
+    .join("");
 };
 
 // Helper function to get Bengali product name
-const getBengaliProductName = (productName: string, products: Product[]): string => {
-  const product = products.find(p => 
-    p.name.toLowerCase().includes(productName.toLowerCase()) || 
-    productName.toLowerCase().includes(p.name.toLowerCase().split(' ')[0])
+const getBengaliProductName = (
+  productName: string,
+  products: Product[]
+): string => {
+  const product = products.find(
+    (p) =>
+      p.name.toLowerCase().includes(productName.toLowerCase()) ||
+      productName.toLowerCase().includes(p.name.toLowerCase().split(" ")[0])
   );
   return product ? product.nameBn : productName;
 };
 
 function App() {
   const [products, setProducts] = useState<Product[]>([
-    { id: '1', name: 'Rice (Atta)', nameBn: 'আটা', quantity: 50, unit: 'kg', price: 55, lastUpdated: new Date() },
-    { id: '2', name: 'Lentils (Dal)', nameBn: 'ডাল', quantity: 30, unit: 'kg', price: 120, lastUpdated: new Date() },
-    { id: '3', name: 'Oil', nameBn: 'তেল', quantity: 20, unit: 'liter', price: 180, lastUpdated: new Date() },
-    { id: '4', name: 'Sugar', nameBn: 'চিনি', quantity: 25, unit: 'kg', price: 65, lastUpdated: new Date() },
-    { id: '5', name: 'Salt', nameBn: 'লবণ', quantity: 40, unit: 'kg', price: 30, lastUpdated: new Date() },
+    {
+      id: "1",
+      name: "Rice (Atta)",
+      nameBn: "আটা",
+      quantity: 9,
+      unit: "kg",
+      price: 55,
+      lastUpdated: new Date(),
+    },
+    {
+      id: "2",
+      name: "Lentils (Dal)",
+      nameBn: "ডাল",
+      quantity: 30,
+      unit: "kg",
+      price: 120,
+      lastUpdated: new Date(),
+    },
+    {
+      id: "3",
+      name: "Oil",
+      nameBn: "তেল",
+      quantity: 5,
+      unit: "liter",
+      price: 180,
+      lastUpdated: new Date(),
+    },
+    {
+      id: "4",
+      name: "Sugar",
+      nameBn: "চিনি",
+      quantity: 7,
+      unit: "kg",
+      price: 65,
+      lastUpdated: new Date(),
+    },
+    {
+      id: "5",
+      name: "Salt",
+      nameBn: "লবণ",
+      quantity: 0,
+      unit: "kg",
+      price: 30,
+      lastUpdated: new Date(),
+    },
   ]);
 
   const [customers, setCustomers] = useState<Customer[]>([
-    { 
-      id: '1', 
-      name: 'Rahim', 
-      phone: '01712345678',
-      totalBaki: 500, 
+    {
+      id: "1",
+      name: "Rahim",
+      phone: "01712345678",
+      totalBaki: 500,
       transactions: [
-        { id: 't1', date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), amount: 300, type: 'credit', description: 'মুদি দোকান থেকে কেনাকাটা' },
-        { id: 't2', date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), amount: 200, type: 'credit', description: 'চাল এবং ডাল' },
-      ]
+        {
+          id: "t1",
+          date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+          amount: 300,
+          type: "credit",
+          description: "মুদি দোকান থেকে কেনাকাটা",
+        },
+        {
+          id: "t2",
+          date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+          amount: 200,
+          type: "credit",
+          description: "চাল এবং ডাল",
+        },
+      ],
     },
-    { 
-      id: '2', 
-      name: 'Karim', 
-      phone: '01898765432',
+    {
+      id: "2",
+      name: "Karim",
+      phone: "01898765432",
       totalBaki: 750,
       transactions: [
-        { id: 't3', date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), amount: 1000, type: 'credit', description: 'মাসিক কেনাকাটা' },
-        { id: 't4', date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), amount: -250, type: 'payment', description: 'আংশিক পরিশোধ' },
-      ]
+        {
+          id: "t3",
+          date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+          amount: 1000,
+          type: "credit",
+          description: "মাসিক কেনাকাটা",
+        },
+        {
+          id: "t4",
+          date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+          amount: -250,
+          type: "payment",
+          description: "আংশিক পরিশোধ",
+        },
+      ],
+    },
+    {
+      id: "3",
+      name: "Jamil",
+      phone: "01970876453",
+      totalBaki: 600,
+      transactions: [
+        {
+          id: "t3",
+          date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+          amount: 800,
+          type: "credit",
+          description: "মাসিক কেনাকাটা",
+        },
+        {
+          id: "t4",
+          date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+          amount: -200,
+          type: "payment",
+          description: "আংশিক পরিশোধ",
+        },
+      ],
     },
   ]);
 
   const [transactions, setTransactions] = useState<Transaction[]>([
-    { id: 'tx1', date: new Date(), type: 'sale', productName: 'Rice (Atta)', quantity: 2, amount: 110, description: 'আটা ২ কেজি বিক্রি হলো ১১০ টাকায়' },
-    { id: 'tx2', date: new Date(), type: 'baki-sale', productName: 'Lentils (Dal)', quantity: 1, amount: 120, customerName: 'Rahim', description: 'রহিম ডাল ১ কেজি বাকিতে নিলো ১২০ টাকা' },
+    {
+      id: "tx1",
+      date: new Date(),
+      type: "sale",
+      productName: "Rice (Atta)",
+      quantity: 2,
+      amount: 110,
+      description: "আটা ২ কেজি বিক্রি হলো ১১০ টাকায়",
+    },
+    {
+      id: "tx2",
+      date: new Date(),
+      type: "baki-sale",
+      productName: "Lentils (Dal)",
+      quantity: 1,
+      amount: 120,
+      customerName: "Rahim",
+      description: "রহিম ডাল ১ কেজি বাকিতে নিলো ১২০ টাকা",
+    },
   ]);
 
   const processVoiceCommand = (command: string) => {
@@ -101,7 +212,7 @@ function App() {
     const newTransaction: Transaction = {
       id: `tx${Date.now()}`,
       date: new Date(),
-      type: 'sale',
+      type: "sale",
       amount: 0,
       description: command,
     };
@@ -110,17 +221,19 @@ function App() {
     // Pattern: "Name + amount + baki"
     const bakiPattern = /(\w+)\s+(\d+)\s+taka\s+baki/i;
     const bakiMatch = command.match(bakiPattern);
-    
+
     if (bakiMatch) {
       const customerName = bakiMatch[1];
       const amount = parseInt(bakiMatch[2]);
-      
+
       // Update or create customer
-      setCustomers(prev => {
-        const existingCustomer = prev.find(c => c.name.toLowerCase() === customerName.toLowerCase());
+      setCustomers((prev) => {
+        const existingCustomer = prev.find(
+          (c) => c.name.toLowerCase() === customerName.toLowerCase()
+        );
         if (existingCustomer) {
-          return prev.map(c => 
-            c.id === existingCustomer.id 
+          return prev.map((c) =>
+            c.id === existingCustomer.id
               ? {
                   ...c,
                   totalBaki: c.totalBaki + amount,
@@ -130,10 +243,10 @@ function App() {
                       id: `bt${Date.now()}`,
                       date: new Date(),
                       amount: amount,
-                      type: 'credit' as const,
-                      description: command
-                    }
-                  ]
+                      type: "credit" as const,
+                      description: command,
+                    },
+                  ],
                 }
               : c
           );
@@ -149,33 +262,35 @@ function App() {
                   id: `bt${Date.now()}`,
                   date: new Date(),
                   amount: amount,
-                  type: 'credit' as const,
-                  description: command
-                }
-              ]
-            }
+                  type: "credit" as const,
+                  description: command,
+                },
+              ],
+            },
           ];
         }
       });
 
-      newTransaction.type = 'baki-sale';
+      newTransaction.type = "baki-sale";
       newTransaction.amount = amount;
       newTransaction.customerName = customerName;
-      newTransaction.description = `${customerName} ${englishToBengaliNumber(amount)} টাকা বাকিতে নিলো`;
-      setTransactions(prev => [newTransaction, ...prev]);
+      newTransaction.description = `${customerName} ${englishToBengaliNumber(
+        amount
+      )} টাকা বাকিতে নিলো`;
+      setTransactions((prev) => [newTransaction, ...prev]);
       return;
     }
 
     // Parse payment commands
     const paymentPattern = /(\w+)\s+(\d+)\s+taka\s+(dilo|payment|paid)/i;
     const paymentMatch = command.match(paymentPattern);
-    
+
     if (paymentMatch) {
       const customerName = paymentMatch[1];
       const amount = parseInt(paymentMatch[2]);
-      
-      setCustomers(prev => 
-        prev.map(c => 
+
+      setCustomers((prev) =>
+        prev.map((c) =>
           c.name.toLowerCase() === customerName.toLowerCase()
             ? {
                 ...c,
@@ -186,20 +301,22 @@ function App() {
                     id: `bt${Date.now()}`,
                     date: new Date(),
                     amount: -amount,
-                    type: 'payment' as const,
-                    description: command
-                  }
-                ]
+                    type: "payment" as const,
+                    description: command,
+                  },
+                ],
               }
             : c
         )
       );
 
-      newTransaction.type = 'baki-payment';
+      newTransaction.type = "baki-payment";
       newTransaction.amount = amount;
       newTransaction.customerName = customerName;
-      newTransaction.description = `${customerName} ${englishToBengaliNumber(amount)} টাকা পরিশোধ করলো`;
-      setTransactions(prev => [newTransaction, ...prev]);
+      newTransaction.description = `${customerName} ${englishToBengaliNumber(
+        amount
+      )} টাকা পরিশোধ করলো`;
+      setTransactions((prev) => [newTransaction, ...prev]);
       return;
     }
 
@@ -207,27 +324,31 @@ function App() {
     // Pattern: "Product + quantity + unit + bikri/sale + price"
     const salePattern = /(\w+)\s+(\d+)\s+(kg|liter|piece)\s+(bikri|sale)/i;
     const saleMatch = command.match(salePattern);
-    
+
     if (saleMatch) {
       const productName = saleMatch[1];
       const quantity = parseFloat(saleMatch[2]);
       const unit = saleMatch[3];
-      
+
       // Find price in command
       const pricePattern = /(\d+)\s+taka/i;
       const priceMatch = command.match(pricePattern);
       const totalAmount = priceMatch ? parseInt(priceMatch[1]) : 0;
 
       // Update inventory
-      setProducts(prev => 
-        prev.map(p => {
-          if (p.name.toLowerCase().includes(productName.toLowerCase()) || 
-              p.nameBn.includes(productName) ||
-              productName.toLowerCase().includes(p.name.toLowerCase().split(' ')[0])) {
+      setProducts((prev) =>
+        prev.map((p) => {
+          if (
+            p.name.toLowerCase().includes(productName.toLowerCase()) ||
+            p.nameBn.includes(productName) ||
+            productName
+              .toLowerCase()
+              .includes(p.name.toLowerCase().split(" ")[0])
+          ) {
             return {
               ...p,
               quantity: p.quantity - quantity,
-              lastUpdated: new Date()
+              lastUpdated: new Date(),
             };
           }
           return p;
@@ -235,32 +356,40 @@ function App() {
       );
 
       const bengaliProductName = getBengaliProductName(productName, products);
-      newTransaction.type = 'sale';
+      newTransaction.type = "sale";
       newTransaction.productName = productName;
       newTransaction.quantity = quantity;
       newTransaction.amount = totalAmount;
-      newTransaction.description = `${bengaliProductName} ${englishToBengaliNumber(quantity)} ${unit === 'kg' ? 'কেজি' : unit === 'liter' ? 'লিটার' : 'পিস'} বিক্রি হলো ${englishToBengaliNumber(totalAmount)} টাকায়`;
-      setTransactions(prev => [newTransaction, ...prev]);
+      newTransaction.description = `${bengaliProductName} ${englishToBengaliNumber(
+        quantity
+      )} ${
+        unit === "kg" ? "কেজি" : unit === "liter" ? "লিটার" : "পিস"
+      } বিক্রি হলো ${englishToBengaliNumber(totalAmount)} টাকায়`;
+      setTransactions((prev) => [newTransaction, ...prev]);
       return;
     }
 
     // Parse stock-in commands
     const stockPattern = /(\w+)\s+(\d+)\s+(kg|liter|piece)\s+(stock|ashlo)/i;
     const stockMatch = command.match(stockPattern);
-    
+
     if (stockMatch) {
       const productName = stockMatch[1];
       const quantity = parseFloat(stockMatch[2]);
 
-      setProducts(prev => 
-        prev.map(p => {
-          if (p.name.toLowerCase().includes(productName.toLowerCase()) || 
-              p.nameBn.includes(productName) ||
-              productName.toLowerCase().includes(p.name.toLowerCase().split(' ')[0])) {
+      setProducts((prev) =>
+        prev.map((p) => {
+          if (
+            p.name.toLowerCase().includes(productName.toLowerCase()) ||
+            p.nameBn.includes(productName) ||
+            productName
+              .toLowerCase()
+              .includes(p.name.toLowerCase().split(" ")[0])
+          ) {
             return {
               ...p,
               quantity: p.quantity + quantity,
-              lastUpdated: new Date()
+              lastUpdated: new Date(),
             };
           }
           return p;
@@ -268,17 +397,25 @@ function App() {
       );
 
       const bengaliProductName = getBengaliProductName(productName, products);
-      newTransaction.type = 'stock-in';
+      newTransaction.type = "stock-in";
       newTransaction.productName = productName;
       newTransaction.quantity = quantity;
       newTransaction.amount = 0;
-      newTransaction.description = `${bengaliProductName} ${englishToBengaliNumber(quantity)} ${stockMatch[3] === 'kg' ? 'কেজি' : stockMatch[3] === 'liter' ? 'লিটার' : 'পিস'} স্টক এসেছে`;
-      setTransactions(prev => [newTransaction, ...prev]);
+      newTransaction.description = `${bengaliProductName} ${englishToBengaliNumber(
+        quantity
+      )} ${
+        stockMatch[3] === "kg"
+          ? "কেজি"
+          : stockMatch[3] === "liter"
+          ? "লিটার"
+          : "পিস"
+      } স্টক এসেছে`;
+      setTransactions((prev) => [newTransaction, ...prev]);
       return;
     }
 
     // Generic transaction if no pattern matched
-    setTransactions(prev => [newTransaction, ...prev]);
+    setTransactions((prev) => [newTransaction, ...prev]);
   };
 
   return (
@@ -288,7 +425,9 @@ function App() {
           <h1 className="text-slate-900 bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
             Voice-AI Inventory & Sales System
           </h1>
-          <p className="text-sm text-slate-600 mt-2">Simple • Smart • Efficient</p>
+          <p className="text-sm text-slate-600 mt-2">
+            Simple • Smart • Efficient
+          </p>
         </header>
 
         <Tabs defaultValue="dashboard" className="mt-6">
@@ -305,17 +444,20 @@ function App() {
               <Users className="w-4 h-4" />
               <span className="hidden sm:inline">Customers</span>
             </TabsTrigger>
-            <TabsTrigger value="transactions" className="flex items-center gap-2">
+            <TabsTrigger
+              value="transactions"
+              className="flex items-center gap-2"
+            >
               <Receipt className="w-4 h-4" />
               <span className="hidden sm:inline">Records</span>
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="dashboard">
-            <Dashboard 
-              products={products} 
-              customers={customers} 
-              transactions={transactions} 
+            <Dashboard
+              products={products}
+              customers={customers}
+              transactions={transactions}
             />
           </TabsContent>
 
