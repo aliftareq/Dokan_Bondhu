@@ -25,7 +25,7 @@ const NavBar = () => {
 
   return (
     <>
-      <div className="navbar fixed z-10 bg-opacity-30 max-w-screen-xl bg-black text-white">
+      <div className="navbar fixed z-10 bg-opacity-30 max-w-screen-xl bg-accent text-white">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -55,8 +55,8 @@ const NavBar = () => {
             DOKAN | BONDHU
           </Link>
         </div>
-        <div className="navbar-center  lg:flex justify-center">
-          <ul className="menu menu-horizontal px-1">{navOptions}</ul>
+        <div className="navbar-center sm:hidden md:flex">
+          <ul className="menu menu-horizontal px-1 text-lg">{navOptions}</ul>
         </div>
         <div className="navbar-end">
           <Link className="btn" to="/login">

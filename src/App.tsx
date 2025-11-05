@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { Toaster } from "./components/ui/sonner";
 import { Dashboard } from "./components/Dashboard";
-import { VoiceInput } from "./components/VoiceInput";
 import { InventoryView } from "./components/InventoryView";
 import { CustomerLedger } from "./components/CustomerLedger";
 import { TransactionsView } from "./components/TransactionsView";
@@ -333,8 +332,6 @@ function App() {
           </TabsContent>
         </Tabs>
       </div>
-      <VoiceInput onCommandProcessed={processVoiceCommand} />
-      <Toaster />
     </div>
   );
 }
