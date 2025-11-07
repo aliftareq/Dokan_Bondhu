@@ -38,10 +38,15 @@ const Home = () => {
         <h1 className="mt-2 text-3xl font-extrabold leading-tight sm:text-4xl md:text-5xl">
           রহিমের দোকান — বলুন, শুনবে, সাথে সাথেই হিসাব হবে।
         </h1>
-        <p className="mt-3 max-w-3xl text-slate-300">
+        {/* <p className="mt-3 max-w-3xl text-slate-300">
           Hands-free <b>voice-first</b> inventory & transaction tracking. Speak
           in Bangla or English—our AI records sales, updates stock, and computes
           dues instantly.
+        </p> */}
+        <p className="mt-3 max-w-3xl text-slate-300">
+          হাতে লিখা ছাড়াই <b>ভয়েস-স্বয়ংক্রিয়</b> ইনভেন্টরি ও লেনদেন ব্যবস্থাপনা।
+          বাংলায় বা ইংরেজিতে বলুন — আমাদের AI স্বয়ংক্রিয়ভাবে বিক্রি রেকর্ড করবে,
+          স্টক আপডেট করবে এবং হিসাব মিলিয়ে দেবে মুহূর্তেই।
         </p>
 
         <div className="mt-6 flex flex-wrap gap-3">
@@ -49,13 +54,13 @@ const Home = () => {
             href="#mic"
             className="rounded-xl bg-gradient-to-tr from-violet-500 to-cyan-300 px-5 py-3 font-extrabold text-slate-900 shadow-[0_12px_40px_rgba(124,58,237,.35)] transition hover:-translate-y-0.5"
           >
-            Try Voice Command
+            ভয়েস কমান্ড ব্যবহার করুন
           </a>
           <a
             href="#transactions"
             className="rounded-xl border border-white/10 px-5 py-3 font-bold text-slate-200 hover:bg-white/5"
           >
-            See Today’s Sales
+            আজকের বিক্রি দেখুন
           </a>
         </div>
 
@@ -104,34 +109,22 @@ const Home = () => {
               <div className="w-full max-w-2xl">
                 <VoiceInput onCommandProcessed={processVoiceCommand} />
               </div>
-
-              {/* Example chips */}
-              <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-                {[
-                  "রহিম ১০০ টাকা বাকী",
-                  "আটা ১ কেজি বিক্রি ৫৫ টাকা",
-                  "ডাল ৫ কেজি স্টক",
-                  "করিম ২০০ টাকা দিলো",
-                ].map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs text-slate-200"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
             </div>
           </div>
 
           {/* Feature Panel */}
-          <aside className="rounded-2xl border border-white/10 bg-white/10 p-5">
-            <ul className="grid gap-4">
-              <li className="flex items-start gap-3">
-                <div className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-[#1f2a44]">
+          <aside
+            className="rounded-2xl border border-white/10 bg-white/10 p-6 
+             flex flex-col justify-between h-full 
+             shadow-[0_0_40px_rgba(124,58,237,.15)]"
+          >
+            <ul className="grid gap-6 flex-1">
+              {/* 1️⃣ Live Stock Sync */}
+              <li className="flex flex-col sm:flex-row items-start gap-3 flex-1">
+                <div className="grid h-12 w-12 place-items-center rounded-xl border border-white/10 bg-[#1f2a44] shrink-0">
                   <svg
-                    width="20"
-                    height="20"
+                    width="22"
+                    height="22"
                     viewBox="0 0 24 24"
                     className="text-sky-300"
                   >
@@ -143,19 +136,26 @@ const Home = () => {
                     />
                   </svg>
                 </div>
-                <div>
-                  <h4 className="font-semibold">Live Stock Sync</h4>
-                  <p className="text-sm text-slate-300">
+                <div className="flex flex-col justify-center flex-1">
+                  <h4 className="font-semibold text-lg text-slate-100">
+                    Live Stock Sync
+                  </h4>
+                  <p className="text-sm text-slate-300 leading-relaxed">
                     Voice updates reflect instantly in your inventory & ledger.
+                    Every time you record a sale or add new stock by speaking,
+                    your system automatically updates quantities, calculates
+                    totals, and synchronizes data across all your devices. No
+                    manual entry, no delays — just real-time accuracy.
                   </p>
                 </div>
               </li>
 
-              <li className="flex items-start gap-3">
-                <div className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-[#1f2a44]">
+              {/* 2️⃣ Lightning Fast */}
+              <li className="flex flex-col sm:flex-row items-start gap-3 flex-1">
+                <div className="grid h-12 w-12 place-items-center rounded-xl border border-white/10 bg-[#1f2a44] shrink-0">
                   <svg
-                    width="20"
-                    height="20"
+                    width="22"
+                    height="22"
                     viewBox="0 0 24 24"
                     className="text-emerald-400"
                   >
@@ -167,19 +167,27 @@ const Home = () => {
                     />
                   </svg>
                 </div>
-                <div>
-                  <h4 className="font-semibold">Lightning Fast</h4>
-                  <p className="text-sm text-slate-300">
-                    Low-latency recognition on any device.
+                <div className="flex flex-col justify-center flex-1">
+                  <h4 className="font-semibold text-lg text-slate-100">
+                    Lightning Fast
+                  </h4>
+                  <p className="text-sm text-slate-300 leading-relaxed">
+                    Our AI-powered recognition engine captures and processes
+                    your voice commands instantly. Whether you’re using a
+                    desktop, tablet, or mobile, the low-latency response ensures
+                    seamless, real-time transaction logging. Even in
+                    low-bandwidth environments, the system adapts intelligently,
+                    keeping your workflow smooth and interruption-free.
                   </p>
                 </div>
               </li>
 
-              <li className="flex items-start gap-3">
-                <div className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-[#1f2a44]">
+              {/* 3️⃣ Bangla + English */}
+              <li className="flex flex-col sm:flex-row items-start gap-3 flex-1">
+                <div className="grid h-12 w-12 place-items-center rounded-xl border border-white/10 bg-[#1f2a44] shrink-0">
                   <svg
-                    width="20"
-                    height="20"
+                    width="22"
+                    height="22"
                     viewBox="0 0 24 24"
                     className="text-pink-300"
                   >
@@ -196,10 +204,17 @@ const Home = () => {
                     />
                   </svg>
                 </div>
-                <div>
-                  <h4 className="font-semibold">Bangla + English</h4>
-                  <p className="text-sm text-slate-300">
-                    Natural commands—no rigid templates.
+                <div className="flex flex-col justify-center flex-1">
+                  <h4 className="font-semibold text-lg text-slate-100">
+                    Bangla + English
+                  </h4>
+                  <p className="text-sm text-slate-300 leading-relaxed">
+                    Speak naturally in Bangla, English, or a mix of both — no
+                    rigid templates, no robotic phrases. The AI understands
+                    conversational language and context, making it easy for
+                    anyone to record sales, track dues, or manage customers.
+                    It’s built for real people, in real business situations, so
+                    you can work the way you talk.
                   </p>
                 </div>
               </li>
@@ -294,8 +309,8 @@ const Home = () => {
 
         {/* Footer */}
         <footer className="py-10 text-center text-slate-400">
-          © {new Date().getFullYear()} Dokan Bondhu. Built with ❤️ for small
-          businesses.
+          © {new Date().getFullYear()} Dokan Bondhu. Built & developed by "Team
+          Dokan Bondhu" for small businesses.
           <div className="mt-2 flex justify-center gap-5">
             <a className="text-slate-300 hover:text-slate-200" href="#">
               Privacy
